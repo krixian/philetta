@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Montserrat:700);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:700|Molengo);
 
 *, *::before, *::after {
     overflow: inherit;
@@ -16,8 +16,40 @@ html {
 
 body {
     background: #310;
+    color: darkgoldenrod;
     font-size: 1.6rem;
     text-align: center;
+    padding-bottom: 15vw;
+}
+
+h1 {
+    font: normal 2.6rem/5.2rem Molengo;
+    text-transform: uppercase;
+    margin: 0 2.6rem;
+}
+
+p {
+    font: normal 1.6rem/5.2rem Molengo;
+    text-transform: uppercase;
+    margin: 0 2.6rem;
+}
+
+@golden: fade(darkgoldenrod, 50%);
+
+ul {
+    background-image: repeating-linear-gradient(to bottom, @golden, @golden 0.1rem, transparent 0.1rem, transparent 2.6rem);
+    color: darkgoldenrod;
+    font: 2rem/5.2rem Molengo;
+    text-align: left;
+    text-transform: uppercase;
+    padding: 0 7.5vw;
+    border-bottom: 0.1rem solid fade(@golden, 20%);
+    
+    a {
+        background: #310;
+        color: darkgoldenrod;
+        text-decoration: none;
+    }
 }
 
 header {
@@ -38,31 +70,54 @@ header {
     display: none;
 }
 
+.now-playing {
+    display: none;
+    background: antiquewhite;
+    width: 84.2vw;
+    position: fixed;
+    bottom: 11vw;
+    left: 7.5vw;
+    border-radius: 5px;
+}
+
 .controls {
-    width: 100vw;
+    width: 84.2vw;
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 7.5vw;
     font-size: 0;
     
     a {
         display: inline-block;
-        width: 18vw;
+        width: 19%;
         height: 10vw;
         background: antiquewhite;
         vertical-align: bottom;
         border-radius: 5px 5px 0 0;
-        margin: 0 1vw;
+        margin: 0 0 0 1.25%;
         
-        &:hover {
-            padding-bottom: 2rem;
-        }
+        &:first-child {
+            margin: 0;
+        } 
         
         svg {
             display: block;
             height: 6vw;
-            fill: fade(#663, 60%);
+            fill: fade(darkgoldenrod, 60%);
             margin: 2vw auto;
+            transition: transform 0.5s;
         }
+        
+        &.down svg {
+            transform: rotate(180deg);
+        }
+    }  
+}
+
+.offline {
+    header {
+        background: desaturate(#800000, 100%);
+        color: desaturate(#b8860b, 100%);
+        border-color: desaturate(#b8860b, 100%);
     }
 }

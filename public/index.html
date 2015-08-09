@@ -6,30 +6,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="css/main.css" />
     </head>
-    <body>
+    <body class="offline">
         <header>Philetta</header>
         
         <ul>
-            <li>Browse</li>
-            <li>Playlists</li>
-            <li>Radio</li>
-            <li>Now playing</li>
+            <li><a href="#">Browse</a></li>
+            <li><a href="#">Playlists</a></li>
+            <li><a href="#">Radio</a></li>
+            <li><a href="#">Now playing</a></li>
         </ul>
         
+        <div class="now-playing">
+            <h1 id="track">No info</h1>
+            <p id="artists">No info</p>
+        </div>
+        
         <div class="controls">
-            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-previous" /></svg> </a>
-            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-play" /></svg> </a>
-            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-stop" /></svg> </a>
-            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-next" /></svg> </a>
+            <a href="#" data-cmd="previous"><svg viewbox="0 0 6 6"><use xlink:href="#control-previous" /></svg></a>
+            <a href="#" data-cmd="play"><svg viewbox="0 0 6 6"><use xlink:href="#control-pause" /></svg></a>
+            <a href="#" data-cmd="stop"><svg viewbox="0 0 6 6"><use xlink:href="#control-stop" /></svg></a>
+            <a href="#" data-cmd="next"><svg viewbox="0 0 6 6"><use xlink:href="#control-next" /></svg></a>
+            <a href="#" data-cmd="popup"><svg viewbox="0 0 6 6"><use xlink:href="#control-popup" /></svg></a>
         </div>
         
         <svg viewbox="0 0 6 6" class="hidden">
             <defs>
                 <path id="control-play" d="M2 0L2 6L5 3Z" />
-                <path id="control-pause" d="M2 0L2 6L3 6L3 0ZM4 0L4 6L5 6L5 0Z" />
-                <path id="control-next" d="M1 0L1 6L4 3ZM4 0L4 6L5 6L5 0Z" />
-                <path id="control-previous" d="M1 0L1 6L2 6L2 0ZM2 3L5 6L5 0Z" />
+                <path id="control-pause" d="M1 0L1 6L2.5 6L2.5 0ZM3.5 0L3.5 6L5 6L5 0Z" />
+                <path id="control-next" d="M1 0L1 6L4 3ZM3.5 0L3.5 6L5 6L5 0Z" />
+                <path id="control-previous" d="M1 0L1 6L2.5 6L2.5 0ZM2 3L5 6L5 0Z" />
                 <path id="control-stop" d="M1 1L1 5L5 5L 5 1Z" />
+                <path id="control-popup" d="M0 4L3 1L6 4Z" />
             </defs>
         </svg>
         
