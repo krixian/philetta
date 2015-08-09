@@ -7,10 +7,31 @@
         <link rel="stylesheet" href="css/main.css" />
     </head>
     <body>
-        <h1>Philetta</h1>
-        <hr />
-        <p id="track"></p>
-        <p><small id="artist"></small> - <small id="album"></small></p>
+        <header>Philetta</header>
+        
+        <ul>
+            <li>Browse</li>
+            <li>Playlists</li>
+            <li>Radio</li>
+            <li>Now playing</li>
+        </ul>
+        
+        <div class="controls">
+            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-previous" /></svg> </a>
+            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-play" /></svg> </a>
+            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-stop" /></svg> </a>
+            <a href="#"> <svg viewbox="0 0 6 6"><use xlink:href="#control-next" /></svg> </a>
+        </div>
+        
+        <svg viewbox="0 0 6 6" class="hidden">
+            <defs>
+                <path id="control-play" d="M2 0L2 6L5 3Z" />
+                <path id="control-pause" d="M2 0L2 6L3 6L3 0ZM4 0L4 6L5 6L5 0Z" />
+                <path id="control-next" d="M1 0L1 6L4 3ZM4 0L4 6L5 6L5 0Z" />
+                <path id="control-previous" d="M1 0L1 6L2 6L2 0ZM2 3L5 6L5 0Z" />
+                <path id="control-stop" d="M1 1L1 5L5 5L 5 1Z" />
+            </defs>
+        </svg>
         
         <script data-main="js/_main" src="js/_require.js"></script>
     </body>

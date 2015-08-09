@@ -1,7 +1,68 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat:700);
+
+*, *::before, *::after {
+    overflow: inherit;
+    padding: 0;
+    border: none;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 html {
+    overflow: auto;
     font-size: 62.5%;
+    box-sizing: border-box;
 }
 
 body {
+    background: #310;
     font-size: 1.6rem;
+    text-align: center;
+}
+
+header {
+    display: inline-block;
+    background: maroon;
+    color: darkgoldenrod;
+    font: 700 6vw/1.2 "Montserrat";
+    letter-spacing: 1em;
+    overflow: hidden;
+    text-transform: uppercase;
+    padding: 0 0 0 1em;
+    border: 0.1em solid darkgoldenrod;
+    border-radius: 0.5rem;
+    margin: 2.6rem 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.controls {
+    width: 100vw;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    font-size: 0;
+    
+    a {
+        display: inline-block;
+        width: 18vw;
+        height: 10vw;
+        background: antiquewhite;
+        vertical-align: bottom;
+        border-radius: 5px 5px 0 0;
+        margin: 0 1vw;
+        
+        &:hover {
+            padding-bottom: 2rem;
+        }
+        
+        svg {
+            display: block;
+            height: 6vw;
+            fill: fade(#663, 60%);
+            margin: 2vw auto;
+        }
+    }
 }

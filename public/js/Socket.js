@@ -5,15 +5,8 @@ define("Socket", function() {
     function Socket(url) {
         this._socket = new WebSocket(url);
         this._eventHandlers = {};
-        this.connected = false;
         
-        this._socket.onopen = onOpen;
         this._socket.onmessage = onMessage.bind(this);
-    }
-    
-    function onOpen(e) {
-        e.event = "connected";
-        fireEvent(e, this);
     }
     
     function onMessage(e) {
@@ -25,9 +18,9 @@ define("Socket", function() {
     function fireEvent(data, socket) {
         var event = data.event, handlers = socket._eventHandlers[event];
         if (handlers && handlers.length && handlers.length > 0) {
-            var d = handlers.length, i = d;
+            var i = handlers.length;
             while (i--) {
-                handlers[d-i](data);
+                handlers[i](data);
             }
         } else {
             console.log("Unhandled event: " + event);

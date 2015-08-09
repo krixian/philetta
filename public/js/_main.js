@@ -9,11 +9,9 @@ requirejs(["Socket"], function(Socket) {
     test.on("track_playback_started", function(e) {
         var track = e.tl_track.track;
         var artists = "";
-        var d = track.artists.length, i = d;
-        d--;
+        var i = track.artists.length;
         while (i--) {
-            var x = d-i;
-            artists += track.artists[x].name;
+            artists += track.artists[i].name;
             if (i > 1) {
                 artists += ", ";
             } else if (i == 1) {
@@ -21,10 +19,9 @@ requirejs(["Socket"], function(Socket) {
             }
         }
         
-        
-        document.getElementById("track").innerHTML = track.name;
+        /*document.getElementById("track").innerHTML = track.name;
         document.getElementById("album").innerHTML = track.album.name;
-        document.getElementById("artist").innerHTML = artists;
+        document.getElementById("artist").innerHTML = artists;*/
     });
     
     function onClose(e) {
@@ -32,5 +29,19 @@ requirejs(["Socket"], function(Socket) {
     }
     
     window.addEventListener("beforeunload", onClose.bind(test), false);
+    
+    var controls = document.getElementsByClassName("controls")[0].childNodes,
+        ci = controls.length;
+    
+    function controlIt(e) {
+        var cmd = "core.playback." +
+            e.target.innerHTML.toLowerCase();
+        test.call(cmd);
+    }
+    
+    while(ci--) {
+        controls[ci].addEventListener("click", controlIt, false);
+    }
+    
     
 });
