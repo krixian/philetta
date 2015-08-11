@@ -1,29 +1,50 @@
 
-requirejs(["mopidy/RpcSocket", "mopidy/Playback", "templar/templar"], function(Socket, Playback, templar) {
-    
-    var test = new Socket("ws://192.168.1.116:6680/mopidy/ws");
-    test.on("socket_opened", function(e) {
-        console.log("Connection opened!");
-        document.body.className = "";
-        playback = new Playback(test);
-        
-        playback.on("track_changed", updateTrack);
+requirejs(["mopidy/Mopidy", "templar/templar"], function(Mopidy, templar) {
+
+    var mopidy = new Mopidy();
+    mopidy.on("ready", function() {
+        mopidy.playback.on("trackchanged", updateTrack);
+        mopidy.playback.on("statechanged", updateState);
     });
     
-    test.on("track_playback_started", function(e) {
-        updateTrack(e.tl_track);
-    });
-    
-    var playback = null;
-    
-    function onClose(e) {
-        this.close();
+    function updateTrack(track) {
+        var vm = { title: "No track", artists: "No artist" };
+        if (track) {
+            var artists = "",
+                j = track.artists.length,
+                k = j - 2;
+                
+            for (var i = 0; i < j; i++) {
+                artists += track.artists[i].name;
+                if (i < k) {
+                    artists += ", ";
+                } else if (i == k) {
+                    artists += " and ";
+                }
+            }
+            
+            vm.track = track.name;
+            vm.artists = artists;
+        }
+        templar(vm, "tl-now-playing");
     }
     
-    window.addEventListener("beforeunload", onClose.bind(test), false);
+    function updateState(isPlaying) {
+        document.getElementById("play") // <div>
+            .childNodes[0]              // <svg>
+            .childNodes[0]              // <use>
+            .setAttribute("xlink:href",
+                isPlaying
+                ? "#control-pause"
+                : "#control-play");
+    }
     
     var controls = document.getElementsByClassName("controls")[0].childNodes,
         ci = controls.length;
+    
+    while(ci--) {
+        controls[ci].addEventListener("click", controlIt, false);
+    }
     
     function controlIt(e) {
         var button = e.currentTarget,
@@ -31,7 +52,6 @@ requirejs(["mopidy/RpcSocket", "mopidy/Playback", "templar/templar"], function(S
         switch (cmd) {
             case "play":
                 playback.togglePause();
-                setStateButton(playback.isPlaying, e.currentTarget);
                 break;
             case "stop":
                 playback.stop();
@@ -51,36 +71,4 @@ requirejs(["mopidy/RpcSocket", "mopidy/Playback", "templar/templar"], function(S
                 break;
         }
     }
-    
-    while(ci--) {
-        controls[ci].addEventListener("click", controlIt, false);
-    }
-    
-    function setStateButton(state, button) {
-        button
-        .childNodes[0] //svg
-        .childNodes[0] //use
-        .setAttribute("xlink:href", state ? "#control-play" : "#control-pause");
-    }
-    
-    function updateTrack(track) {
-        var vm = { track: "-", artists: "-" };
-        track = track.track;
-        if (track) {
-            var artists = "";
-            for (var i = 0; i < track.artists.length; i++) {
-                artists = artists + track.artists[i].name;
-                if (i < track.artists.length - 2) {
-                    artists += ", ";
-                } else if (i == track.artists.length - 2) {
-                    artists += " and ";
-                }
-            }
-            
-            vm.track = track.name;
-            vm.artists = artists;
-        }
-        templar(vm, "tl-now-playing");
-    }
-    
 });

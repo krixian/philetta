@@ -32,14 +32,12 @@ define(function() {
     
     function call(method, parameters, callback) {
         if (this._isAwaitingResult) {
-            console.log("Added to queue: " + method);
             this._queuedCalls.push({
                 method: method,
                 parameters: parameters,
                 callback: callback
             });
         } else {
-            console.log("Sent: " + method);
             var rpc = _createRpcJson(method, parameters);
         
             if (callback) {
@@ -67,7 +65,7 @@ define(function() {
     }
     
     function _onOpen(e) {
-        e.event = "socket_opened";
+        e.event = "open";
         _fireEvent(e, this);
     }
     
@@ -77,7 +75,6 @@ define(function() {
             isResult = data.result !== undefined;
         
         if (isResult && rpcSocket._isAwaitingResult) {
-            console.log("Result recieved: " + data.result);
             rpcSocket._resultCallback(data.result);
             rpcSocket._resultCallback = null;
             rpcSocket._isAwaitingResult = false;
@@ -85,7 +82,6 @@ define(function() {
         } else if (data.error) {
             alert("Error from socket: " + data.message);
         } else {
-            console.log("Event recieved: " + data.event);
             _fireEvent(data, rpcSocket);
         }
     }

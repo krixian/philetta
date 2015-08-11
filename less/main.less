@@ -36,7 +36,7 @@ p {
 
 @golden: fade(darkgoldenrod, 50%);
 
-ul {
+ul.stripy {
     background-image: repeating-linear-gradient(to bottom, @golden, @golden 0.1rem, transparent 0.1rem, transparent 2.6rem);
     color: darkgoldenrod;
     font: 2rem/5.2rem Molengo;
@@ -45,10 +45,8 @@ ul {
     padding: 0 7.5vw;
     border-bottom: 0.1rem solid fade(@golden, 20%);
     
-    a {
+    span {
         background: #310;
-        color: darkgoldenrod;
-        text-decoration: none;
     }
 }
 
@@ -91,12 +89,13 @@ header {
     left: 7.5vw;
     font-size: 0;
     
-    a {
+    li {
         display: inline-block;
         width: 19%;
         height: 10vw;
         background: antiquewhite;
         vertical-align: bottom;
+        overflow: hidden;
         border-radius: 5px 5px 0 0;
         margin: 0 0 0 1.25%;
         transition: height 0.25s;
@@ -104,21 +103,18 @@ header {
         &:first-child {
             margin: 0;
         } 
-        
+         
         svg {
             display: block;
             height: 6vw;
             fill: fade(darkgoldenrod, 60%);
             margin: 2vw auto;
             transition: transform 0.125s;
-<<<<<<< HEAD
-=======
         }
         
         &.down {
             height: 14vw;
             padding: 4vw 0 0 0;
->>>>>>> 4cfa3375be5452796b168d22a66c352baee53f3e
         }
         
         &.down svg {

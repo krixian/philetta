@@ -9,6 +9,8 @@ define(function() {
         this.currentTrack = null;
         
         this._socket.on("playback_state_changed", _onStateChanged.bind(this));
+        this._socket.on("track_playback_started", _cbCurrentTrack.bind(this));
+        
         socket.call("core.playback.get_state", null, _cbCurrentState.bind(this));
     }
     
@@ -73,7 +75,7 @@ define(function() {
     
     function _onStateChanged(e) {
         this.isPlaying = e.new_state === "playing";
-        _fireEvent("state_changed", this.isPlaying, this);
+        _fireEvent("statechanged", this.isPlaying, this);
     }
     
     function _cbCurrentState(result) {
@@ -86,12 +88,13 @@ define(function() {
     }
     
     function _cbCurrentTrack(result) {
-        this.currentTrack = result;
-        _fireEvent("track_changed", this.currentTrack, this);
+        this.currentTrack = result.track;
+        _fireEvent("trackchanged", this.currentTrack, this);
     }
     
     function _fireEvent(event, eventArgs, playback) {
         var handlers = playback._eventHandlers[event];
+        console.log("Playback event: " + event);
         
         if (handlers) {
             for (var i = 0; i < handlers.length; i++) {
