@@ -3,6 +3,7 @@ define(["./RpcSocket", "./Playback"], function(Socket, Playback) {
     
     // Constructor --------------------------------------
     function Mopidy() {
+        this.isReady = false;
         this.playback = null;
         
         this._socket = new Socket("ws://192.168.1.116:6680/mopidy/ws");
@@ -31,7 +32,9 @@ define(["./RpcSocket", "./Playback"], function(Socket, Playback) {
     
     // Private methods ----------------------------------
     function _onSocketOpen(e) {
+        this.isReady = true;
         this.playback = new Playback(this._socket);
+        this.mixer = new Mixer(this._socket);
         
         _fireEvent("ready", this);
     }

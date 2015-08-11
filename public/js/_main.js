@@ -3,12 +3,14 @@ requirejs(["mopidy/Mopidy", "templar/templar"], function(Mopidy, templar) {
 
     var mopidy = new Mopidy();
     mopidy.on("ready", function() {
+        document.body.removeAttribute("class");
+        
         mopidy.playback.on("trackchanged", updateTrack);
         mopidy.playback.on("statechanged", updateState);
     });
     
     function updateTrack(track) {
-        var vm = { title: "No track", artists: "No artist" };
+        var vm = { title: "Not playing", artists: "" };
         if (track) {
             var artists = "",
                 j = track.artists.length,
@@ -23,7 +25,7 @@ requirejs(["mopidy/Mopidy", "templar/templar"], function(Mopidy, templar) {
                 }
             }
             
-            vm.track = track.name;
+            vm.title = track.name;
             vm.artists = artists;
         }
         templar(vm, "tl-now-playing");
@@ -47,28 +49,30 @@ requirejs(["mopidy/Mopidy", "templar/templar"], function(Mopidy, templar) {
     }
     
     function controlIt(e) {
-        var button = e.currentTarget,
-            cmd = button.getAttribute("data-cmd");
-        switch (cmd) {
-            case "play":
-                playback.togglePause();
-                break;
-            case "stop":
-                playback.stop();
-                break;
-            case "previous":
-                playback.previous();
-                break;
-            case "next":
-                playback.next();
-                break;
-            case "popup":
-                var element = document.getElementsByClassName("now-playing")[0],
-                    isVisible = (element.className === "now-playing show");
-                
-                button.className = isVisible ? "" : "down";
-                element.className = isVisible ? "now-playing" : "now-playing show";
-                break;
+        if (mopidy.isReady) {
+            var button = e.currentTarget,
+                cmd = button.getAttribute("data-cmd");
+            switch (cmd) {
+                case "play":
+                    playback.togglePause();
+                    break;
+                case "stop":
+                    playback.stop();
+                    break;
+                case "previous":
+                    playback.previous();
+                    break;
+                case "next":
+                    playback.next();
+                    break;
+                case "popup":
+                    var element = document.getElementsByClassName("now-playing")[0],
+                        isVisible = (element.className === "now-playing show");
+                    
+                    button.className = isVisible ? "" : "down";
+                    element.className = isVisible ? "now-playing" : "now-playing show";
+                    break;
+            }
         }
     }
 });
