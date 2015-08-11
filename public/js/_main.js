@@ -1,5 +1,5 @@
 
-requirejs(["mopidy/RpcSocket", "mopidy/Playback"], function(Socket, Playback) {
+requirejs(["mopidy/RpcSocket", "mopidy/Playback", "templar/templar"], function(Socket, Playback, templar) {
     
     var test = new Socket("ws://192.168.1.116:6680/mopidy/ws");
     test.on("socket_opened", function(e) {
@@ -7,7 +7,7 @@ requirejs(["mopidy/RpcSocket", "mopidy/Playback"], function(Socket, Playback) {
         document.body.className = "";
         playback = new Playback(test);
         
-        playback.on("track_updated", updateTrack);
+        playback.on("track_changed", updateTrack);
     });
     
     test.on("track_playback_started", function(e) {
@@ -30,24 +30,24 @@ requirejs(["mopidy/RpcSocket", "mopidy/Playback"], function(Socket, Playback) {
             cmd = button.getAttribute("data-cmd");
         switch (cmd) {
             case "play":
-                var state = playback.togglePause();
-                setStateButton(state, e.currentTarget);
+                playback.togglePause();
+                setStateButton(playback.isPlaying, e.currentTarget);
                 break;
             case "stop":
                 playback.stop();
                 break;
             case "previous":
                 playback.previous();
+                break;
             case "next":
                 playback.next();
                 break;
             case "popup":
                 var element = document.getElementsByClassName("now-playing")[0],
-                    display = element.style.display,
-                    isVisible = (display === "block");
+                    isVisible = (element.className === "now-playing show");
                 
                 button.className = isVisible ? "" : "down";
-                element.style.display = isVisible ? "none" : "block";
+                element.className = isVisible ? "now-playing" : "now-playing show";
                 break;
         }
     }
@@ -60,29 +60,27 @@ requirejs(["mopidy/RpcSocket", "mopidy/Playback"], function(Socket, Playback) {
         button
         .childNodes[0] //svg
         .childNodes[0] //use
-        .setAttribute("xlink:href", (state === 1) ? "#control-play" : "#control-pause");
+        .setAttribute("xlink:href", state ? "#control-play" : "#control-pause");
     }
     
     function updateTrack(track) {
+        var vm = { track: "-", artists: "-" };
         track = track.track;
         if (track) {
             var artists = "";
             for (var i = 0; i < track.artists.length; i++) {
-                artists += track.artists[i].name;
-                if (i > 1) {
+                artists = artists + track.artists[i].name;
+                if (i < track.artists.length - 2) {
                     artists += ", ";
-                } else if (i == 1) {
+                } else if (i == track.artists.length - 2) {
                     artists += " and ";
                 }
             }
             
-            document.getElementById("track").innerHTML = track.name;
-            document.getElementById("artists").innerHTML = artists;
-        } else {
-            document.getElementById("track").innerHTML = "Nothing playing";
-            document.getElementById("artists").innerHTML = "";
+            vm.track = track.name;
+            vm.artists = artists;
         }
+        templar(vm, "tl-now-playing");
     }
-    
     
 });

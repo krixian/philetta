@@ -5,7 +5,7 @@ define(function() {
     function Playback(socket) {
         this._socket = socket;
         this._eventHandlers = {};
-        this.state = Playback.STATE.UNDEFINED;
+        this.isPlaying = null;
         this.currentTrack = null;
         
         this._socket.on("playback_state_changed", _onStateChanged.bind(this));
@@ -25,14 +25,6 @@ define(function() {
         on: on
     }
     
-    // Static properties --------------------------------
-    Playback.STATE = {
-        "UNDEFINED": -1,
-        "PAUSED": 0,
-        "PLAYING": 1,
-        "STOPPED": 2
-    }
-    
     // Public methods -----------------------------------
     function play(track) {
         _callSocket(this._socket, "play", track);
@@ -47,12 +39,10 @@ define(function() {
     }
     
     function next() {
-        this.play();
         _callSocket(this._socket, "next");
     }
     
     function previous() {
-        this.play();
         _callSocket(this._socket, "previous");
     }
     
@@ -61,13 +51,11 @@ define(function() {
     }
     
     function togglePause() {
-        var isPlaying = this.state === Playback.STATE.PLAYING;
-        if (isPlaying) {
+        if (this.isPlaying) {
             this.pause();
         } else {
             this.play();
         }
-        return !isPlaying ? Playback.STATE.PAUSED : Playback.STATE.PLAYING;
     }
     
     function on(event, handler) {
@@ -84,12 +72,12 @@ define(function() {
     }
     
     function _onStateChanged(e) {
-        var newState = e.new_state.toUpperCase();
-        this.state = Playback.STATE[newState];
+        this.isPlaying = e.new_state === "playing";
+        _fireEvent("state_changed", this.isPlaying, this);
     }
     
     function _cbCurrentState(result) {
-        this.state = Playback.STATE[result.toUpperCase()];
+        this.isPlaying = result === "playing";
         (_updateCurrentTrack.bind(this))();
     }
     
@@ -99,7 +87,7 @@ define(function() {
     
     function _cbCurrentTrack(result) {
         this.currentTrack = result;
-        _fireEvent("track_updated", this.currentTrack, this);
+        _fireEvent("track_changed", this.currentTrack, this);
     }
     
     function _fireEvent(event, eventArgs, playback) {
