@@ -9,16 +9,16 @@
     <body class="offline">
         <header>Philetta</header>
         
-        <ul>
-            <li><a href="#">Browse</a></li>
-            <li><a href="#">Playlists</a></li>
-            <li><a href="#">Radio</a></li>
-            <li><a href="#">Now playing</a></li>
+        <ul id="main-list" class="stripy">
+            <li><span>Search</span></li>
+            <li><span>Browse</span></li>
+            <li><span>Playlists</span></li>
+            <li><span>Radio</span></li>
         </ul>
         
-        <div class="now-playing">
-            <h1 id="track">No info</h1>
-            <p id="artists">No info</p>
+        <div id="tl-now-playing" class="now-playing">
+            <h1 id="track">{{track}}</h1>
+            <p id="artists">{{artists}}</p>
         </div>
         
         <div class="controls">
