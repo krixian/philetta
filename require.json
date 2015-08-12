@@ -1,0 +1,9 @@
+({
+    baseUrl: "./public/js",
+    paths: {
+        requireLib: "_require"
+    },
+    include: ["requireLib"],
+    name: "_main",
+    out: "./public/js/main.min.js"
+})
