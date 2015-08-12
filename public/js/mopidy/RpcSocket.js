@@ -80,7 +80,7 @@ define(function() {
             rpcSocket._isAwaitingResult = false;
             _nextQueued(rpcSocket);
         } else if (data.error) {
-            alert("Error from socket: " + data.message);
+            alert("Error from socket: " + data.error.message + ": " + data.error.data);
         } else {
             _fireEvent(data, rpcSocket);
         }

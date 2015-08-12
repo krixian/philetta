@@ -15,7 +15,7 @@ define(function() {
     
     // Public methods -----------------------------------
     function setVolume(volume) {
-        this._socket.call("core.mixer.set_volume", volume);
+        this._socket.call("core.mixer.set_volume", [volume]);
     }
     
     return Mixer;

@@ -9,7 +9,7 @@ define(function() {
         this.currentTrack = null;
         
         this._socket.on("playback_state_changed", _onStateChanged.bind(this));
-        this._socket.on("track_playback_started", _cbCurrentTrack.bind(this));
+        this._socket.on("track_playback_started", _playbackStarted.bind(this));
         
         socket.call("core.playback.get_state", null, _cbCurrentState.bind(this));
     }
@@ -85,6 +85,11 @@ define(function() {
     
     function _updateCurrentTrack() {
         this._socket.call("core.playback.get_current_tl_track", null, _cbCurrentTrack.bind(this));
+    }
+    
+    function _playbackStarted(result) {
+        this.currentTrack = result.tl_track.track;
+        _fireEvent("trackchanged", this.currentTrack, this);
     }
     
     function _cbCurrentTrack(result) {

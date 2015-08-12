@@ -54,16 +54,16 @@ requirejs(["mopidy/Mopidy", "templar/templar"], function(Mopidy, templar) {
                 cmd = button.getAttribute("data-cmd");
             switch (cmd) {
                 case "play":
-                    playback.togglePause();
+                    mopidy.playback.togglePause();
                     break;
                 case "stop":
-                    playback.stop();
+                    mopidy.playback.stop();
                     break;
                 case "previous":
-                    playback.previous();
+                    mopidy.playback.previous();
                     break;
                 case "next":
-                    playback.next();
+                    mopidy.playback.next();
                     break;
                 case "popup":
                     var element = document.getElementsByClassName("now-playing")[0],
@@ -75,4 +75,6 @@ requirejs(["mopidy/Mopidy", "templar/templar"], function(Mopidy, templar) {
             }
         }
     }
+    
+    window.addEventListener("beforeunload", function() { mopidy.close(); }, false);
 });

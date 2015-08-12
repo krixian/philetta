@@ -1,15 +1,16 @@
-define(["./RpcSocket", "./Playback"], function(Socket, Playback) {
+define(["./RpcSocket", "./Playback", "./Mixer"], function(Socket, Playback, Mixer) {
     "use strict";
     
     // Constructor --------------------------------------
     function Mopidy() {
         this.isReady = false;
         this.playback = null;
+        this.mixer = null;
         
         this._socket = new Socket("ws://192.168.1.116:6680/mopidy/ws");
         this._eventHandlers = {};
         
-        this._socket.on("open", _onSocketOpen);
+        this._socket.on("open", _onSocketOpen.bind(this));
     }
     
     // Instance methods ---------------------------------
