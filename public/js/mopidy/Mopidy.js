@@ -1,4 +1,4 @@
-define(["./RpcSocket", "./Playback", "./Mixer"], function(Socket, Playback, Mixer) {
+define(["./RpcSocket", "./Playback", "./Mixer", "./Library"], function(Socket, Playback, Mixer, Library) {
     "use strict";
     
     // Constructor --------------------------------------
@@ -6,6 +6,7 @@ define(["./RpcSocket", "./Playback", "./Mixer"], function(Socket, Playback, Mixe
         this.isReady = false;
         this.playback = null;
         this.mixer = null;
+        this.library = null;
         
         this._socket = new Socket("ws://192.168.1.116:6680/mopidy/ws");
         this._eventHandlers = {};
@@ -36,6 +37,7 @@ define(["./RpcSocket", "./Playback", "./Mixer"], function(Socket, Playback, Mixe
         this.isReady = true;
         this.playback = new Playback(this._socket);
         this.mixer = new Mixer(this._socket);
+        this.library = new Library(this._socket);
         
         _fireEvent("ready", this);
     }

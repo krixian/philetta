@@ -9,8 +9,8 @@
     <body class="offline">
         <header>Philetta</header>
         
-        <ul id="main-list" class="stripy">
-            <li><span>Search</span></li>
+        <ul id="menu" class="stripy">
+            <li data-cmd="search"><span>Search</span></li>
             <li><span>Browse</span></li>
             <li><span>Playlists</span></li>
             <li><span>Radio</span></li>
@@ -21,7 +21,7 @@
             <p id="artists">{{artists}}</p>
         </div>
         
-        <ul class="controls">
+        <ul id="controls" class="controls">
             <li data-cmd="previous"><svg viewbox="0 0 6 6"><use xlink:href="#control-previous" /></svg></li>
             <li id="play" data-cmd="play"><svg viewbox="0 0 6 6"><use xlink:href="#control-pause" /></svg></li>
             <li data-cmd="stop"><svg viewbox="0 0 6 6"><use xlink:href="#control-stop" /></svg></li>
@@ -29,28 +29,19 @@
             <li data-cmd="popup"><svg viewbox="0 0 6 6"><use xlink:href="#control-popup" /></svg></li>
         </ul>
         
-        <div class="search">
-            <input type="search" placeholder="search" />
-            <input type="submit" value="search" />
-            <h1>Tracks</h1>
-            <ul class="results">
-                <li>Lust for life</li>
-                <li>Regin in Blood</li>
-                <li>Rock'n'Roll highschool</li>
-            </ul>
-            <h1>Artists</h1>
-            <ul class="results">
-                <li>Lust for life</li>
-                <li>Regin in Blood</li>
-                <li>Rock'n'Roll highschool</li>
-            </ul>
+        <form id="search" class="search blank">
+            <a id="search-close" href="#"><svg viewbox="0 0 6 6"><use xlink:href="#cross" /></svg> Close</a>
+            <input type="search" placeholder="Search" class="textbox" /><label for="search-submit" class="button">
+                <input type="submit" value="search" id="search-submit" />
+                <svg viewbox="0 0 6 6"><use xlink:href="#search" /></svg>
+            </label>
             <h1>Albums</h1>
-            <ul class="results">
-                <li>Lust for life</li>
-                <li>Regin in Blood</li>
-                <li>Rock'n'Roll highschool</li>
-            </ul>
-        </div>
+            <ul id="search-albums" class="results"></ul>
+            <h1>Artists</h1>
+            <ul id="search-artists" class="results"></ul>
+            <h1>Tracks</h1>
+            <ul id="search-tracks" class="results"></ul>
+        </form>
         
         <svg viewbox="0 0 6 6" class="hidden">
             <defs>
@@ -60,10 +51,19 @@
                 <path id="control-previous" d="M1 0L1 6L2.5 6L2.5 0ZM2 3L5 6L5 0Z" />
                 <path id="control-stop" d="M1 1L1 5L5 5L 5 1Z" />
                 <path id="control-popup" d="M0 4L3 1L6 4Z" />
+                <path id="cross" d="M0 1L1 0L3 2L5 0L6 1L4 3L6 5L5 6L3 4L1 6L0 5L2 3Z" />
+                <path id="search" d="M0 2.5Q0 0 2.5 0T5 2.5T2.5 5T0 2.5ZM4.5 4L6 5.5L5.5 6L4 4.5ZM1 2.5Q1 4 2.5 4T4 2.5T2.5 1T1 2.5Z" />
             </defs>
         </svg>
         
-        <script src="js/main.min.js"></script>
-        <!--script data-main="js/_main" src="js/_require.js"></script-->
+        <!--script src="js/main.min.js"></script-->
+        <script data-main="js/_main" src="js/_require.js"></script>
+        
+        <script id="tl-search-result" type="text/x-templar">
+            <li {{ attr }}>
+                <h2>{{ title }}</h2>
+                <p>{{ subtitle }}</p>
+            </li>
+        </script>
     </body>
 <html>
