@@ -1,4 +1,4 @@
-define(function() {
+define(["../templar/templar"], function(templar) {
     function parseArtists(artists) {
         var result = "",
             j = artists.length,
@@ -16,7 +16,29 @@ define(function() {
         return result;
     }
     
+    function resultsToList(list, results, handler) {
+        list.innerHTML = "";
+        if (results) {
+            for (var i = 0; i < Math.min(results.length, 6); i++) {
+                var result = results[i],
+                    listItem = document.createElement("li"),
+                    tl = { title: result.name };
+                
+                if (result["__model__"] !== "Artist") {
+                    tl.subtitle = parseArtists(result.artists);
+                }
+                
+                listItem.innerHTML = templar.parse(tl, "tl-search-result");
+                listItem.setAttribute("data-type", result.__model__);
+                listItem.setAttribute("data-uri", result.uri);
+                listItem.addEventListener("click", handler, false);
+                list.appendChild(listItem);
+            }
+        }
+    }
+    
     return {
-        parseArtists: parseArtists
+        parseArtists: parseArtists,
+        resultsToList: resultsToList
     };
 });

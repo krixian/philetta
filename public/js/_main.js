@@ -30,46 +30,26 @@ requirejs(["mopidy/Mopidy", "templar/templar", "philetta/commands", "philetta/ut
                 : "#control-play");
     }
     
+    function itemSelected(e) {
+        var item = e.currentTarget,
+            itemType = item.getAttribute("data-type"),
+            itemUri = item.getAttribute("data-uri");
+        
+        alert("Type: " + itemType + "\r\nUri: " + itemUri);
+    }
+    
     function updateSearchResults(results) {
         document.getElementById("search").className = "search";
                 
         var albumList = document.getElementById("search-albums"),
             artistList = document.getElementById("search-artists"),
             trackList = document.getElementById("search-tracks");
-        
-        albumList.innerHTML = "";
-        artistList.innerHTML = "";
-        trackList.innerHTML = "";
-        
+            
         results = results[0];
         if (results) {
-            var albums = results.albums,
-                artists = results.artists,
-                tracks = results.tracks;
-            
-            if (albums) {
-                for (var i = 0; i < Math.min(albums.length, 6); i++) {
-                    var album = albums[i],
-                        tl = { title: album.name, subtitle: util.parseArtists(album.artists), attr: "data-uri=\"" + album.uri + "\"" };
-                    albumList.innerHTML += templar.parse(tl, "tl-search-result");
-                }
-            }
-            
-            if (artists) {
-                for (var i = 0; i < Math.min(artists.length, 6); i++) {
-                    var artist = artists[i],
-                        tl = { title: artist.name, subtitle: "", attr: "data-uri=\"" + artist.uri + "\"" };
-                    artistList.innerHTML += templar.parse(tl, "tl-search-result");
-                }
-            }
-            
-            if (tracks) {
-                for (var i = 0; i < Math.min(tracks.length, 6); i++) {
-                    var track = tracks[i],
-                        tl = { title: track.name, subtitle: util.parseArtists(track.artists), attr: "data-uri=\"" + track.uri + "\"" };
-                    trackList.innerHTML += templar.parse(tl, "tl-search-result");
-                }
-            }
+            util.resultsToList(albumList, results.albums, itemSelected);
+            util.resultsToList(artistList, results.artists, itemSelected);
+            util.resultsToList(trackList, results.tracks, itemSelected);
         }
     }
     
