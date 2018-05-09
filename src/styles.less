@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+// Color palette: http://www.colourlovers.com/palette/953498/Headache
+
+@base-grid: 2.2rem;
+@default-spacing: @base-grid;
+
+@font-size-title: 3.7rem;
+@font-size-header: 2.3rem;
+@font-size-subheader: 1.8rem;
+@font-size-primary: 1.4rem;
+@font-size-secondary: 1.1rem;
+@font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+
+@color-text-dark: fade(#000, 89%);
+@color-text-white: #fff;
+
+*, *:before, *:after {
+    border: none;
+    box-sizing: border-box;
+    list-style: none;
+    font: inherit;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background: radial-gradient(circle at center, #4E342E, #3E2723);
+    font: normal @font-size-primary @font-family;
+    line-height: @base-grid;
+    margin: @default-spacing;
+}
+
+svg, path {
+    width: 100px;
+    fill: #fff;
+}

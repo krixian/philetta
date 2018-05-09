@@ -1,0 +1,24 @@
+<p>
+  library works!
+</p>
+
+<svg viewBox="0 0 12 12">
+  <path d="M0 0Ĺ 0 12L12 12Z" />
+</svg>
+
+<app-now-playing></app-now-playing>
+
+<app-volume></app-volume>
+
+<ul *ngIf="items">
+  <li *ngFor="let item of items">
+    <a [routerLink]="[{uri: item.uri}]">
+      {{item.name}}
+    </a>
+
+    <button *ngIf="item.type === 'track'"
+      (click)="playTrack(item)">
+      Play
+    </button>
+  </li>
+</ul>
